@@ -4,5 +4,13 @@
 
 ```bash
 autoreconf -vi
+./configure
+make
+sudo make install
+```
 
+## To Execute
+
+```
+sqd3
 ```
