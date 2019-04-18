@@ -50,3 +50,23 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Project object files
+aclocal.m4
+autom4te.cache
+compile
+configure
+depcomp
+install-sh
+missing
+test-driver
+config.log
+config.status
+*.in
+src/sqd3
+src/Makefile
+tests/tests
+tests/Makefile
+*.log
+.deps
+*.trs
