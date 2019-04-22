@@ -1,0 +1,5 @@
+Executar testes
+```
+make check
+```
+
