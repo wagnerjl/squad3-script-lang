@@ -63,6 +63,7 @@ test-driver
 config.log
 config.status
 *.in
+Makefile
 src/sqd3
 src/Makefile
 tests/tests
