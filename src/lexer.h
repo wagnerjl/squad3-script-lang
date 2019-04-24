@@ -6,6 +6,10 @@
 
 #include "tokens.h"
 
+// Essa funcao inicializa o lexer
+void init_lexer();
+
+// Essas funcoes serao utilizadas no parser
 int get_lookahead();
 void match(int expected);
 

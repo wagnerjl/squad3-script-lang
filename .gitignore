@@ -66,8 +66,10 @@ config.status
 Makefile
 src/sqd3
 src/Makefile
+tests/lexer
 tests/tests
 tests/Makefile
 *.log
 .deps
 *.trs
+.dirstamp

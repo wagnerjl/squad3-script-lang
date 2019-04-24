@@ -1,5 +1,15 @@
 # squad3-script-lang
 
+## Env Dependencies
+
+### Ubuntu
+
+### Fedora
+
+```bash
+sudo dnf install check-devel
+```
+
 ## To Build From Sources
 
 ```bash
@@ -14,3 +24,4 @@ sudo make install
 ```
 sqd3
 ```
+
