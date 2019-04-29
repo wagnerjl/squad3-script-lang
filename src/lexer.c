@@ -8,7 +8,7 @@ token lookeahead;
  * Essas funcoes serao utilizadas para
  * reconhecer tokens.
  */
-token uint() {
+token uint(void) {
   char c = getc(stream);
   if (isdigit(c)) {
     while((c = getc(stream)) && isdigit(c)) {
@@ -20,7 +20,7 @@ token uint() {
 }
 
 int get_next_token() {
-  if(uint(stream)) return UINT;
+  if(uint()) return UINT;
   return 0;
 }
 
@@ -35,7 +35,7 @@ void match(int expected) {
   lookeahead = get_next_token(stream);
 }
 
-int get_lookahead() {
+int get_lookahead(void) {
     return lookeahead;
 }
 
