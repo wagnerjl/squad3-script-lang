@@ -19,7 +19,7 @@ token uint(void) {
   return 0;
 }
 
-int get_next_token() {
+int get_next_token(void) {
   if(uint()) return UINT;
   return 0;
 }
@@ -32,7 +32,7 @@ void match(int expected) {
   if (expected != lookeahead) {
     fprintf(stderr, "expected %d but found %d", expected, lookeahead);
   }
-  lookeahead = get_next_token(stream);
+  lookeahead = get_next_token();
 }
 
 int get_lookahead(void) {
@@ -41,5 +41,5 @@ int get_lookahead(void) {
 
 void init_lexer(FILE *input) {
   stream = input;
-  lookeahead = get_next_token(stream);
+  lookeahead = get_next_token();
 }
