@@ -8,15 +8,15 @@ token lookeahead;
  * Essas funcoes serao utilizadas para
  * reconhecer tokens.
  */
-int uint(void) {
+bool uint(void) {
   char c = getc(stream);
   if (isdigit(c)) {
     while((c = getc(stream)) && isdigit(c)) {
     }
-    return 1;
+    return true;
   }
   ungetc(c, stream);
-  return 0;
+  return false;
 }
 
 void ignore_spaces() {
@@ -25,13 +25,13 @@ void ignore_spaces() {
     ungetc(c, stream);
 }
 
-int binary_op(void) {
+bool binary_op(void) {
   char c = getc(stream);
   if (c == '+' || c == '-' || c == '*' || c == '/') {
-      return 1;
+      return true;
   } 
   ungetc(c, stream);
-  return 0;
+  return false;
 }
 
 token get_next_token(void) {
