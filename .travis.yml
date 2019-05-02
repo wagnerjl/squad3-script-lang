@@ -21,4 +21,6 @@ before_install:
 
 install:
   - autoreconf -vfi
-  - ./configure && make && make check
+  - ./configure && make
+
+script: make check
