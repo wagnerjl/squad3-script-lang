@@ -16,5 +16,5 @@ lexer_CFLAGS = -I/usr/include \
 							 -I$(includedir)
 lexer_LDADD = ${LEXER_LIBS} \
 							../src/lexer.o \
-							-lcheck -lsubunit
+							-lcheck -lsubunit -lm
 
