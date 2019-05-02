@@ -73,3 +73,7 @@ tests/Makefile
 .deps
 *.trs
 .dirstamp
+
+# IDE files
+.idea/
+*.iml

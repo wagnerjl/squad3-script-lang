@@ -19,7 +19,14 @@ token uint(void) {
   return 0;
 }
 
+void ignore_spaces() {
+    char c;
+    while((c = getc(stream)) && isspace(c));
+    ungetc(c, stream);
+}
+
 int get_next_token(void) {
+  ignore_spaces();
   if(uint()) return UINT;
   return 0;
 }
