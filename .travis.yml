@@ -7,14 +7,15 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - gcc-8
+            - gcc-9
       env:
-        - MATRIX_EVAL="CC=gcc-8"
+        - MATRIX_EVAL="CC=gcc-9"
 
 before_install:
   - eval "${MATRIX_EVAL}"
 
 language: c
+dist: xenial
 
 install:
   - autoreconf -vfi
