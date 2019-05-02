@@ -17,7 +17,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-  - sudo apt-get update; sudo apt-get install check
+  - sudo apt-get update; sudo apt-get -y install check
 
 install:
   - autoreconf -vfi
