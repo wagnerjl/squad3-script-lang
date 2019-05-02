@@ -4,6 +4,10 @@
 
 ### Ubuntu
 
+```bash
+sudo apt-get install libcheck
+```
+
 ### Fedora
 
 ```bash
