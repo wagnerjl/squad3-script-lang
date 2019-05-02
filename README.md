@@ -5,7 +5,7 @@
 ### Ubuntu
 
 ```bash
-sudo apt-get install libcheck
+sudo apt-get install check
 ```
 
 ### Fedora
