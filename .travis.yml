@@ -1,4 +1,8 @@
 ---
+sudo: required
+language: c
+dist: xenial
+
 matrix:
   include:
     - os: linux
@@ -13,9 +17,7 @@ matrix:
 
 before_install:
   - eval "${MATRIX_EVAL}"
-
-language: c
-dist: xenial
+  - sudo apt-get update; sudo apt-get install check
 
 install:
   - autoreconf -vfi
