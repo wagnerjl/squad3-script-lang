@@ -12,16 +12,85 @@ START_TEST(test_factor_integer) {
 }
 END_TEST
 
+START_TEST(test_expr_only_factor) {
+  char input[] = "1";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_uint_eq(expr(), 1);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_expr_sum) {
+  char input[] = "1 + 1";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_uint_eq(expr(), 2);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_expr_minus) {
+  char input[] = "1 - 1";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_uint_eq(expr(), 0);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_expr_minus_negative) {
+  char input[] = "1 - 2";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_int_eq(expr(), -1);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_expr_mult) {
+  char input[] = "2 * 2";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_uint_eq(expr(), 4);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_expr_div) {
+  char input[] = "4 / 2";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_uint_eq(expr(), 2);
+  fclose(buffer);
+}
+END_TEST
+
 Suite *parser_suite(void) {
   Suite *suite;
   TCase *tc_factor;
+  TCase *tc_expr;
 
   suite = suite_create("Parser");
   tc_factor = tcase_create("factor");
+  tc_expr = tcase_create("expr");
 
   tcase_add_test(tc_factor, test_factor_integer);
+  tcase_add_test(tc_expr, test_expr_only_factor);
+  tcase_add_test(tc_expr, test_expr_sum);
+  tcase_add_test(tc_expr, test_expr_minus);
+  tcase_add_test(tc_expr, test_expr_minus_negative);
+  tcase_add_test(tc_expr, test_expr_mult);
+  tcase_add_test(tc_expr, test_expr_div);
 
   suite_add_tcase(suite, tc_factor);
+  suite_add_tcase(suite, tc_expr);
 
   return suite;
 }
