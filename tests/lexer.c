@@ -1,13 +1,18 @@
+#include "../src/lexer.h"
 #include <check.h>
 #include <stdio.h>
-#include "../src/lexer.h"
 
 START_TEST(test_uint_consumer) {
+  char lexeme[LEXEME_MAX_SIZE];
+
   char input[] = "1234";
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
   ck_assert_int_eq(get_lookahead(), UINT);
+  read_lexeme(lexeme);
+  ck_assert_str_eq("1234", lexeme);
+
   fclose(buffer);
 }
 END_TEST
@@ -23,11 +28,16 @@ START_TEST(test_not_recognized) {
 END_TEST
 
 START_TEST(test_space_beginning) {
+  char lexeme[LEXEME_MAX_SIZE];
+
   char input[] = "   1";
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
   ck_assert_int_eq(get_lookahead(), UINT);
+  read_lexeme(lexeme);
+  ck_assert_str_eq("1", lexeme);
+
   fclose(buffer);
 }
 END_TEST
@@ -96,8 +106,7 @@ START_TEST(test_if_is_division) {
 }
 END_TEST
 
-Suite *lexer_suite(void)
-{
+Suite *lexer_suite(void) {
   Suite *suite;
   TCase *tc_integers;
   TCase *tc_spaces;
@@ -113,12 +122,11 @@ Suite *lexer_suite(void)
   tcase_add_test(tc_spaces, test_space_beginning);
   tcase_add_test(tc_spaces, test_space_between);
   tcase_add_test(tc_spaces, test_space_end);
-  
+
   tcase_add_test(tc_binary, test_if_is_plus);
   tcase_add_test(tc_binary, test_if_is_minus);
   tcase_add_test(tc_binary, test_if_is_multiplication);
   tcase_add_test(tc_binary, test_if_is_division);
-  
 
   suite_add_tcase(suite, tc_integers);
   suite_add_tcase(suite, tc_spaces);
