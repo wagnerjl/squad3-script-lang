@@ -36,6 +36,8 @@ void ignore_spaces() {
 bool binary_op(void) {
   char c = getc(stream);
   if (c == '+' || c == '-' || c == '*' || c == '/') {
+    lexeme[0] = c;
+    lexeme[1] = '\0';
     return true;
   }
   ungetc(c, stream);
@@ -57,7 +59,7 @@ void read_lexeme(char *dest) { strcpy(dest, lexeme); }
  * Essas funcoes sao publicas.
  * O parser utilizara essas funcoes.
  */
-void match(int expected) {
+void match(token expected) {
   if (expected != lookeahead) {
     fprintf(stderr, "expected %d but found %d", expected, lookeahead);
   }
