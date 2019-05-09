@@ -3,6 +3,7 @@
 
 typedef int token;
 
+
 enum {
   UINT = 255,
   BINARY_OP,

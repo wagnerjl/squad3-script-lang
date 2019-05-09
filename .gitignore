@@ -66,6 +66,7 @@ config.status
 Makefile
 src/sqd3
 src/Makefile
+tests/parser
 tests/lexer
 tests/tests
 tests/Makefile
