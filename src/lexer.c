@@ -18,10 +18,9 @@ bool uint(void) {
     while ((c = getc(stream)) && isdigit(c)) {
       lexeme[position++] = c;
     }
+    lexeme[position] = '\0';
     return true;
   }
-
-  lexeme[position] = '\0';
   ungetc(c, stream);
   return false;
 }
