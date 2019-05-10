@@ -83,7 +83,7 @@ START_TEST(test_expr_div) {
 END_TEST
 
 START_TEST(test_expr_mult_and_minus) {
-  char input[] = "100 * 2 - 15";
+  char input[] = "100*2 - 15";
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 

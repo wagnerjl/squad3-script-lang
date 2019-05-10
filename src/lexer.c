@@ -19,6 +19,7 @@ bool uint(void) {
       lexeme[position++] = c;
     }
     lexeme[position] = '\0';
+    ungetc(c, stream);
     return true;
   }
   ungetc(c, stream);
