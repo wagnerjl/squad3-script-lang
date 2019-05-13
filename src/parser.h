@@ -10,5 +10,5 @@
 
 #include "lexer.h"
 
-unsigned long long expr();
-unsigned long long factor();
+long long expr();
+long long factor();
