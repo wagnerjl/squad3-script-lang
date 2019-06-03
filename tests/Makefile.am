@@ -5,12 +5,14 @@
 
 # Configuracao do binario de tests
 # Este binario ira agrupar todos os testes unitarios
-TESTS = lexer parser tree
-check_PROGRAMS = lexer parser tree
+TESTS = lexer parser tree sqd3_types
+check_PROGRAMS = lexer parser tree sqd3_types
 
 lexer_SOURCES = lexer.c
 
 parser_SOURCES = parser.c
+
+sqd3_types_SOURCES = sqd3_types.c
 
 tree_SOURCES = tree.c
 
@@ -31,6 +33,13 @@ parser_LDADD = ${PARSER_LIBS} \
 							 ../src/parser.o \
 							 ../src/tree.o \
 							 -lcheck -lsubunit -lm -lrt -lpthread
+
+sqd3_types_CFLAGS = -I/usr/include \
+							      -I$(includedir)
+
+sqd3_types_LDADD = ${SQD3_TYPES_LIBS} \
+							     ../src/sqd3_types.o \
+							     -lcheck -lsubunit -lm -lrt -lpthread
 
 tree_CFLAGS = -I/usr/include \
 							 -I$(includedir)

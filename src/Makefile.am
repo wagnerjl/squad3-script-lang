@@ -7,6 +7,7 @@ bin_PROGRAMS = sqd3
 
 sqd3_SOURCES = lexer.c \
 							 parser.c \
+							 sqd3_types.c \
 							 tree.c \
 							 main.c
 
