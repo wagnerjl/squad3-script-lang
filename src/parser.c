@@ -20,7 +20,7 @@ integer expr(void) {
     expr_root = tree_put_operation(expr_root, lexeme, number);
   }
 
-  integer tree_result = calculate_tree(expr_root);
+  integer tree_result = read_integer_from_object(calculate_tree(expr_root));
   tree_node_free(expr_root);
 
   return tree_result;

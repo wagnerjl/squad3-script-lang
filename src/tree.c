@@ -47,9 +47,9 @@ void print_tree(NODE *node, char *str) {
   }
 }
 
-integer calculate_tree(NODE *node) {
-  integer left;
-  integer right;
+SQD3_OBJECT *calculate_tree(NODE *node) {
+  SQD3_OBJECT *left;
+  SQD3_OBJECT *right;
 
   if (node->left != NULL)
     left = calculate_tree(node->left);
@@ -58,16 +58,16 @@ integer calculate_tree(NODE *node) {
 
   if (node->nodetype == OPERATOR) {
     if (!strcmp(node->value, "*"))
-      return left * right;
+      return execute_operator_multi(left, right);
     if (!strcmp(node->value, "/"))
-      return left / right;
+      return execute_operator_division(left, right);
     if (!strcmp(node->value, "+"))
-      return left + right;
+      return execute_operator_plus(left, right);
     if (!strcmp(node->value, "-"))
-      return left - right;
+      return execute_operator_minus(left, right);
   }
 
-  return atoll(node->value);
+  return integer_from_long_long(atoll(node->value));
 }
 
 void tree_node_set_str(NODE *node, const char *str) {

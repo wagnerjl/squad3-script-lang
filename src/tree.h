@@ -30,7 +30,7 @@ NODE *tree_node_init(node_t nodetype);
 void tree_node_free(NODE *node);
 void tree_add(NODE *node, NODE *son, side_t side);
 void print_tree(NODE *node, char *str);
-integer calculate_tree(NODE *node);
+SQD3_OBJECT *calculate_tree(NODE *node);
 void tree_node_set_str(NODE *node, const char *str);
 NODE *tree_put_operation(NODE *root, const char *operation, const char *value);
 

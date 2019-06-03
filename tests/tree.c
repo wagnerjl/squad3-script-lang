@@ -74,7 +74,7 @@ START_TEST(test_print_arithmetic_tree_adjusted) {
 
   print_tree(root, result);
   ck_assert_str_eq("1 + 2", result);
-  ck_assert_int_eq(3, calculate_tree(root));
+  ck_assert_int_eq(3, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }
@@ -90,7 +90,7 @@ START_TEST(test_print_arithmetic_tree_adjusted_mult) {
 
   print_tree(root, result);
   ck_assert_str_eq("1 * 2", result);
-  ck_assert_int_eq(2, calculate_tree(root));
+  ck_assert_int_eq(2, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }
@@ -107,7 +107,7 @@ START_TEST(test_print_arithmetic_tree_correct_order) {
 
   print_tree(root, result);
   ck_assert_str_eq("1 + 1 * 2", result);
-  ck_assert_int_eq(3, calculate_tree(root));
+  ck_assert_int_eq(3, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }
@@ -125,7 +125,7 @@ START_TEST(test_print_arithmetic_tree_correct_order_with_sum) {
 
   print_tree(root, result);
   ck_assert_str_eq("1 * 2 + 3 * 4", result);
-  ck_assert_int_eq(14, calculate_tree(root));
+  ck_assert_int_eq(14, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }
@@ -144,7 +144,7 @@ START_TEST(test_print_arithmetic_tree_correct_order_with_minus) {
 
   print_tree(root, result);
   ck_assert_str_eq("4 * 3 + 10 / 2 - 7", result);
-  ck_assert_int_eq(10, calculate_tree(root));
+  ck_assert_int_eq(10, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }
@@ -164,7 +164,7 @@ START_TEST(test_print_arithmetic_tree_correct_order_with_plus_sequence) {
 
   print_tree(root, result);
   ck_assert_str_eq("1 + 5 * 2 * 10 / 4 - 25", result);
-  ck_assert_int_eq(-4, calculate_tree(root));
+  ck_assert_int_eq(-4, read_integer_from_object(calculate_tree(root)));
 
   tree_node_free(root);
 }

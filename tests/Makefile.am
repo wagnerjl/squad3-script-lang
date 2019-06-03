@@ -31,6 +31,7 @@ parser_CFLAGS = -I/usr/include \
 parser_LDADD = ${PARSER_LIBS} \
 							../src/lexer.o \
 							 ../src/parser.o \
+							../src/sqd3_types.o \
 							 ../src/tree.o \
 							 -lcheck -lsubunit -lm -lrt -lpthread
 
@@ -46,4 +47,5 @@ tree_CFLAGS = -I/usr/include \
 
 tree_LDADD = ${TREE_LIBS} \
 							../src/tree.o \
+							../src/sqd3_types.o \
 							-lcheck -lsubunit -lm -lrt -lpthread

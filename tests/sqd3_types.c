@@ -17,6 +17,51 @@ START_TEST(test_init_integer) {
 }
 END_TEST
 
+START_TEST(test_plus_integers) {
+  SQD3_OBJECT *a = integer_from_long_long(1);
+  SQD3_OBJECT *b = integer_from_long_long(1);
+
+  ck_assert_int_eq(read_integer_from_object(execute_operator_plus(a, b)), 2);
+
+  free_object(a);
+  free_object(b);
+}
+END_TEST
+
+START_TEST(test_minus_integers) {
+  SQD3_OBJECT *a = integer_from_long_long(5);
+  SQD3_OBJECT *b = integer_from_long_long(3);
+
+  ck_assert_int_eq(read_integer_from_object(execute_operator_minus(a, b)), 2);
+
+  free_object(a);
+  free_object(b);
+}
+END_TEST
+
+START_TEST(test_division_integers) {
+  SQD3_OBJECT *a = integer_from_long_long(10);
+  SQD3_OBJECT *b = integer_from_long_long(2);
+
+  ck_assert_int_eq(read_integer_from_object(execute_operator_division(a, b)),
+                   5);
+
+  free_object(a);
+  free_object(b);
+}
+END_TEST
+
+START_TEST(test_multi_integers) {
+  SQD3_OBJECT *a = integer_from_long_long(10);
+  SQD3_OBJECT *b = integer_from_long_long(2);
+
+  ck_assert_int_eq(read_integer_from_object(execute_operator_multi(a, b)), 20);
+
+  free_object(a);
+  free_object(b);
+}
+END_TEST
+
 Suite *parser_suite(void) {
   Suite *suite;
   TCase *tc_integer;
@@ -26,6 +71,10 @@ Suite *parser_suite(void) {
   suite = suite_create("SQD3 Types");
 
   tcase_add_test(tc_integer, test_init_integer);
+  tcase_add_test(tc_integer, test_plus_integers);
+  tcase_add_test(tc_integer, test_minus_integers);
+  tcase_add_test(tc_integer, test_multi_integers);
+  tcase_add_test(tc_integer, test_division_integers);
 
   suite_add_tcase(suite, tc_integer);
 
