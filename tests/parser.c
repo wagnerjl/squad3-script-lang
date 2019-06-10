@@ -1,4 +1,6 @@
 #include "../src/parser.h"
+#include "../src/sqd3_types.h"
+
 #include <check.h>
 #include <stdio.h>
 
@@ -7,7 +9,8 @@ START_TEST(test_factor_integer) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(factor(), 1234);
+  SQD3_OBJECT *result = factor();
+  ck_assert_int_eq(1234, read_integer_from_object(result));
   fclose(buffer);
 }
 END_TEST
@@ -17,7 +20,8 @@ START_TEST(test_expr_only_factor) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 1);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 1);
   fclose(buffer);
 }
 END_TEST
@@ -27,7 +31,8 @@ START_TEST(test_expr_sum) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 2);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 2);
   fclose(buffer);
 }
 END_TEST
@@ -37,7 +42,8 @@ START_TEST(test_expr_minus) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 0);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 0);
   fclose(buffer);
 }
 END_TEST
@@ -47,7 +53,8 @@ START_TEST(test_expr_minus_negative) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_int_eq(expr(), -1);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), -1);
   fclose(buffer);
 }
 END_TEST
@@ -57,7 +64,8 @@ START_TEST(test_expr_minus_more_digits) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_int_eq(expr(), 10);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 10);
   fclose(buffer);
 }
 END_TEST
@@ -67,7 +75,8 @@ START_TEST(test_expr_mult) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 4);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 4);
   fclose(buffer);
 }
 END_TEST
@@ -77,7 +86,8 @@ START_TEST(test_expr_div) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 2);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 2);
   fclose(buffer);
 }
 END_TEST
@@ -87,7 +97,8 @@ START_TEST(test_expr_mult_and_minus) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 185);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 185);
   fclose(buffer);
 }
 END_TEST
@@ -97,7 +108,8 @@ START_TEST(test_complex_with_parentheses) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 800);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 800);
   fclose(buffer);
 }
 END_TEST
@@ -107,7 +119,38 @@ START_TEST(test_complex_without_parentheses) {
   FILE *buffer = fmemopen(input, strlen(input), "r");
   init_lexer(buffer);
 
-  ck_assert_uint_eq(expr(), 404);
+  SQD3_OBJECT *result = expr();
+  ck_assert_int_eq(read_integer_from_object(result), 404);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_negative_expression) {
+  char input[] = "- 10";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_int_eq(read_integer_from_object(expr()), -10);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_negative_factor) {
+  char input[] = "10 + - 9";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_int_eq(read_integer_from_object(expr()), 1);
+  fclose(buffer);
+}
+END_TEST
+
+START_TEST(test_negative_with_parentheses) {
+  char input[] = "- (- 10 + (- 9))";
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  init_lexer(buffer);
+
+  ck_assert_int_eq(read_integer_from_object(expr()), 19);
   fclose(buffer);
 }
 END_TEST
@@ -133,6 +176,9 @@ Suite *parser_suite(void) {
   tcase_add_test(tc_expr, test_expr_mult);
   tcase_add_test(tc_expr, test_expr_div);
   tcase_add_test(tc_expr, test_expr_mult_and_minus);
+  tcase_add_test(tc_expr, test_negative_expression);
+  tcase_add_test(tc_expr, test_negative_factor);
+  tcase_add_test(tc_expr, test_negative_with_parentheses);
 
   tcase_add_test(tc_complex_expr, test_complex_with_parentheses);
   tcase_add_test(tc_complex_expr, test_complex_without_parentheses);
