@@ -32,3 +32,6 @@ COPY NEWS /workdir/NEWS
 COPY README /workdir/README
 COPY README.md /workdir/README.md
 
+RUN autoreconf -vi
+RUN ./configure --prefix=/usr
+RUN make
