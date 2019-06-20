@@ -9,4 +9,4 @@ matrix:
         directories:
           - $HOME/$NAME/
       before_install: sudo docker build -t squad3-script-lang -f build/Dockerfile .
-      script: sudo docker run -ti --net=host squad3-script-lang make check
+      script: sudo docker run -ti --net=host squad3-script-lang
