@@ -35,3 +35,5 @@ COPY README.md /workdir/README.md
 RUN autoreconf -vi
 RUN ./configure --prefix=/usr
 RUN make
+
+CMD ["make", "check"]
