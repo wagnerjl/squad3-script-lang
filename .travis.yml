@@ -3,10 +3,6 @@ language: c
 matrix:
   include:
     - name: ubuntu
-      if: tag IS NOT present
       services: docker
-      cache:
-        directories:
-          - $HOME/$NAME/
       before_install: sudo docker build -t squad3-script-lang -f build/Dockerfile .
       script: sudo docker run -ti --net=host squad3-script-lang
