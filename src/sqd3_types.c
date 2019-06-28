@@ -55,8 +55,24 @@ SQD3_OBJECT *build_builtin_function_ref(varname_t varname, void *function_ptr) {
   return ref;
 }
 
+void to_string(SQD3_OBJECT *value, char *destination) {
+  if (value->object_type == T_INTEGER) {
+    sprintf(destination, "%lld", read_integer_from_object(value->value));
+  }
+  if (value->object_type == T_REF) {
+    SQD3_OBJECT_REF_VALUE *ref_value = read_ref_value_from_ref(value->value);
+    if (ref_value->ref_type == T_VARIABLE) {
+      to_string(read_value_from_ref(value), destination);
+    }
+  }
+}
+
 integer read_integer_from_object(SQD3_OBJECT *object) {
   return *((integer *)object->value);
+}
+
+SQD3_OBJECT_REF_VALUE *read_ref_value_from_ref(SQD3_OBJECT *object) {
+  return ((SQD3_OBJECT_REF_VALUE *)object->value);
 }
 
 const char *read_string_from_object(SQD3_OBJECT *object) {
