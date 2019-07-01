@@ -221,16 +221,23 @@ END_TEST
 
 START_TEST(test_builtin_function_with_parameters) {
   char input[] = "soma(1, 2)";
-  FILE *buffer = fmemopen(input, strlen(input), "r");
-  init_lexer(buffer);
-  init_vtable();
+  char input2[] = "soma(3, 2)";
 
+  FILE *buffer = fmemopen(input, strlen(input), "r");
+  FILE *buffer2 = fmemopen(input2, strlen(input2), "r");
+
+  init_vtable();
   SQD3_OBJECT *ref = build_builtin_function_ref("soma", &soma);
   declare_local_variable("soma", ref);
 
+  init_lexer(buffer);
   ck_assert_int_eq(read_integer_from_object(expr()), 3);
 
+  init_lexer(buffer2);
+  ck_assert_int_eq(read_integer_from_object(expr()), 5);
+
   fclose(buffer);
+  fclose(buffer2);
 }
 END_TEST
 
