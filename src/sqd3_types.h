@@ -1,6 +1,7 @@
 #ifndef __SQD3_TYPES_H__
 #define __SQD3_TYPES_H__
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

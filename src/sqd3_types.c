@@ -1,8 +1,9 @@
 #include "sqd3_types.h"
 
-extern SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object);
-
-#define NORMALIZE(o) (o->object_type == T_REF) ? read_value_from_ref(o) : o
+extern SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object,
+                                        bool stop_execution);
+#define NORMALIZE(o)                                                           \
+  (o->object_type == T_REF) ? read_value_from_ref(o, false) : o
 
 SQD3_OBJECT *integer_from_long_long(integer value) {
   SQD3_OBJECT *ref = malloc(sizeof(SQD3_OBJECT));
@@ -37,6 +38,12 @@ SQD3_OBJECT *build_ref(varname_t varname) {
 
   ref->value = (void *)ref_value;
 
+  SQD3_OBJECT *ref_content = read_value_from_ref(ref, false);
+  if (ref_value != NULL) {
+    free(ref);
+    return ref_content;
+  }
+
   return ref;
 }
 
@@ -62,7 +69,7 @@ void to_string(SQD3_OBJECT *value, char *destination) {
   if (value->object_type == T_REF) {
     SQD3_OBJECT_REF_VALUE *ref_value = read_ref_value_from_ref(value);
     if (ref_value->ref_type == T_VARIABLE) {
-      to_string(read_value_from_ref(value), destination);
+      to_string(read_value_from_ref(value, true), destination);
     }
   }
 }

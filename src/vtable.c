@@ -74,15 +74,19 @@ SQD3_OBJECT *recover_from_stack_args(int pos) {
   return local_entry->ref;
 }
 
-SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object) {
+SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object, bool stop_execution) {
   SQD3_OBJECT_REF_VALUE *ref = (SQD3_OBJECT_REF_VALUE *)object->value;
   VTABLE_ENTRY *entry = recover_variable(ref->varname);
   if (entry != NULL) {
     return entry->ref;
   }
 
-  fprintf(stderr, "error: variable %s not declared\n", ref->varname);
-  exit(-2);
+  if (stop_execution) {
+    fprintf(stderr, "error: variable %s not declared\n", ref->varname);
+    exit(-2);
+  }
+
+  return NULL;
 }
 
 SQD3_OBJECT *execute_operator_assign(SQD3_OBJECT *left, SQD3_OBJECT *right) {

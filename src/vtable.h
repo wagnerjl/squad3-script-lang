@@ -1,6 +1,7 @@
 #ifndef __VTABLE_H__
 #define __VTABLE_H__
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +32,6 @@ void dispose_local_variables();
 SQD3_OBJECT *execute_operator_assign(SQD3_OBJECT *left, SQD3_OBJECT *right);
 
 VTABLE_ENTRY *recover_variable(varname_t varname);
-integer read_integer_from_ref(SQD3_OBJECT *object);
+integer read_integer_from_ref(SQD3_OBJECT *object, bool stop_execution);
 
 #endif
