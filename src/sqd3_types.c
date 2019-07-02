@@ -39,7 +39,7 @@ SQD3_OBJECT *build_ref(varname_t varname) {
   ref->value = (void *)ref_value;
 
   SQD3_OBJECT *ref_content = read_value_from_ref(ref, false);
-  if (ref_value != NULL) {
+  if (ref_content != NULL) {
     free(ref);
     return ref_content;
   }
@@ -60,6 +60,21 @@ SQD3_OBJECT *build_builtin_function_ref(varname_t varname, void *function_ptr) {
   ref->value = (void *)ref_value;
 
   return ref;
+}
+
+SQD3_OBJECT *clone_object(SQD3_OBJECT *value) {
+  SQD3_OBJECT *cloned = malloc(sizeof(SQD3_OBJECT));
+  memcpy(cloned, value, sizeof(SQD3_OBJECT));
+
+  cloned->value = malloc(sizeof(value->value));
+  memcpy(cloned->value, value->value, sizeof(value->value));
+
+  if (value->object_type == T_REF) {
+    ((SQD3_OBJECT_REF_VALUE *)cloned->value)->ptr =
+        ((SQD3_OBJECT_REF_VALUE *)value->value)->ptr;
+  }
+
+  return cloned;
 }
 
 void to_string(SQD3_OBJECT *value, char *destination) {

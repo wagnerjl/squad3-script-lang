@@ -22,7 +22,6 @@ int main() {
     init_lexer(buffer);
     SQD3_OBJECT *result = expr();
     printf("%lld \n", read_integer_from_object(result));
-    free_object(result);
   }
   return 0;
 }

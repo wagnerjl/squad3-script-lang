@@ -34,9 +34,11 @@ void finish_context(void) {
 }
 
 VTABLE_ENTRY *declare_local_variable(varname_t varname, SQD3_OBJECT *value) {
+  SQD3_OBJECT *cloned = clone_object(value);
+
   VTABLE_ENTRY *entry = malloc(sizeof(VTABLE_ENTRY));
   strncpy(entry->varname, varname, sizeof(varname_t));
-  entry->ref = value;
+  entry->ref = cloned;
   entry->next = NULL;
   entry->previous = last_entry;
   entry->scope = SCOPE_LOCAL;

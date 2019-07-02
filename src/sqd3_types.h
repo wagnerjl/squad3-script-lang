@@ -30,6 +30,7 @@ typedef struct SQD3_OBJECT_REF_VALUE {
   varname_t varname;
 } SQD3_OBJECT_REF_VALUE;
 
+SQD3_OBJECT *clone_object(SQD3_OBJECT *value);
 SQD3_OBJECT *integer_from_long_long(integer value);
 SQD3_OBJECT *string_from_const_char(const char *value);
 SQD3_OBJECT *build_ref(varname_t varname);

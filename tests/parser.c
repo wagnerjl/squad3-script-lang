@@ -181,21 +181,15 @@ END_TEST
 
 START_TEST(test_assign_variable) {
   char input[] = "x = 10";
-  char input2[] = "x";
 
   FILE *buffer = fmemopen(input, strlen(input), "r");
-  FILE *buffer2 = fmemopen(input2, strlen(input2), "r");
 
   init_vtable();
 
   init_lexer(buffer);
   ck_assert_int_eq(read_integer_from_object(expr()), 10);
 
-  init_lexer(buffer2);
-  ck_assert_int_eq(read_integer_from_object(expr()), 10);
-
   fclose(buffer);
-  fclose(buffer2);
 }
 END_TEST
 
