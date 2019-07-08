@@ -29,35 +29,37 @@ void init_context(varname_t context_name) {
 
 void finish_context(void) {
   last_entry = last_entry->previous;
-  free(last_entry);
+  free(last_entry->next);
   last_entry->next = NULL;
 }
 
 VTABLE_ENTRY *declare_local_variable(varname_t varname, SQD3_OBJECT *value) {
+  SQD3_OBJECT *cloned = clone_object(value);
 
   VTABLE_ENTRY *entry = malloc(sizeof(VTABLE_ENTRY));
   strncpy(entry->varname, varname, sizeof(varname_t));
-  entry->ref = value;
+  entry->ref = cloned;
   entry->next = NULL;
   entry->previous = last_entry;
   entry->scope = SCOPE_LOCAL;
 
   last_entry->next = entry;
   last_entry = entry;
+
   return entry;
 }
 
 void dispose_local_variables() {
   while (last_entry->scope == SCOPE_LOCAL) {
     last_entry = last_entry->previous;
-    free(last_entry);
+    free(last_entry->next);
     last_entry->next = NULL;
   }
 }
 
 VTABLE_ENTRY *recover_variable(varname_t varname) {
   VTABLE_ENTRY *entry = last_entry;
-  while (entry->previous != NULL) {
+  while (entry != first_entry) {
     if (!strcmp(varname, entry->varname) && entry->scope == SCOPE_LOCAL) {
       return entry;
     }
@@ -74,15 +76,19 @@ SQD3_OBJECT *recover_from_stack_args(int pos) {
   return local_entry->ref;
 }
 
-SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object) {
+SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object, bool stop_execution) {
   SQD3_OBJECT_REF_VALUE *ref = (SQD3_OBJECT_REF_VALUE *)object->value;
   VTABLE_ENTRY *entry = recover_variable(ref->varname);
   if (entry != NULL) {
     return entry->ref;
   }
 
-  fprintf(stderr, "error: variable %s not declared\n", ref->varname);
-  exit(-2);
+  if (stop_execution) {
+    fprintf(stderr, "error: variable %s not declared\n", ref->varname);
+    exit(-2);
+  }
+
+  return NULL;
 }
 
 SQD3_OBJECT *execute_operator_assign(SQD3_OBJECT *left, SQD3_OBJECT *right) {

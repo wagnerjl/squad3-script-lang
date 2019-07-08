@@ -10,6 +10,8 @@ sqd3_SOURCES = lexer.c \
                sqd3_types.c \
                tree.c \
                vtable.c \
+               builtin_functions.c \
+               debug.c \
                main.c
 
 

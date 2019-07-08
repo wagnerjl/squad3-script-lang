@@ -1,8 +1,9 @@
 #include "sqd3_types.h"
 
-extern SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object);
-
-#define NORMALIZE(o) (o->object_type == T_REF) ? read_value_from_ref(o) : o
+extern SQD3_OBJECT *read_value_from_ref(SQD3_OBJECT *object,
+                                        bool stop_execution);
+#define NORMALIZE(o)                                                           \
+  (o->object_type == T_REF) ? read_value_from_ref(o, false) : o
 
 SQD3_OBJECT *integer_from_long_long(integer value) {
   SQD3_OBJECT *ref = malloc(sizeof(SQD3_OBJECT));
@@ -37,6 +38,12 @@ SQD3_OBJECT *build_ref(varname_t varname) {
 
   ref->value = (void *)ref_value;
 
+  SQD3_OBJECT *ref_content = read_value_from_ref(ref, false);
+  if (ref_content != NULL) {
+    free(ref);
+    return ref_content;
+  }
+
   return ref;
 }
 
@@ -55,8 +62,39 @@ SQD3_OBJECT *build_builtin_function_ref(varname_t varname, void *function_ptr) {
   return ref;
 }
 
+SQD3_OBJECT *clone_object(SQD3_OBJECT *value) {
+  SQD3_OBJECT *cloned = malloc(sizeof(SQD3_OBJECT));
+  memcpy(cloned, value, sizeof(SQD3_OBJECT));
+
+  cloned->value = malloc(sizeof(value->value));
+  memcpy(cloned->value, value->value, sizeof(value->value));
+
+  if (value->object_type == T_REF) {
+    ((SQD3_OBJECT_REF_VALUE *)cloned->value)->ptr =
+        ((SQD3_OBJECT_REF_VALUE *)value->value)->ptr;
+  }
+
+  return cloned;
+}
+
+void to_string(SQD3_OBJECT *value, char *destination) {
+  if (value->object_type == T_INTEGER) {
+    sprintf(destination, "%lld", read_integer_from_object(value));
+  }
+  if (value->object_type == T_REF) {
+    SQD3_OBJECT_REF_VALUE *ref_value = read_ref_value_from_ref(value);
+    if (ref_value->ref_type == T_VARIABLE) {
+      to_string(read_value_from_ref(value, true), destination);
+    }
+  }
+}
+
 integer read_integer_from_object(SQD3_OBJECT *object) {
   return *((integer *)object->value);
+}
+
+SQD3_OBJECT_REF_VALUE *read_ref_value_from_ref(SQD3_OBJECT *object) {
+  return ((SQD3_OBJECT_REF_VALUE *)object->value);
 }
 
 const char *read_string_from_object(SQD3_OBJECT *object) {
